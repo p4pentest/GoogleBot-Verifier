@@ -1,0 +1,31 @@
+#!/bin/bash
+echo "Enter File Name :"
+read file
+
+len=`wc -l $file | cut -d " " -f1`
+
+for (( k=1 ; k <= $len ; k++ ))
+do
+	b=`sed -n ''$k'p' $file`
+	ff=0
+			
+	akamai=`host $b | grep -iw "googlebot" | wc -l`
+	
+	if [ "$akamai" == "1" ]
+	then
+		akamai=`host $b | cut -d " " -f5`
+		akamai2=`host $akamai | cut -d " " -f4`
+
+		if [ "$b" == "$akamai2" ]
+		then
+			ff=1
+			echo "$b"
+		fi
+	fi
+
+	stat=`expr "$len" - "$k"`
+	echo $stat "IPs are left..."
+done
+	
+	
+	
